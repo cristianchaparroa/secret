@@ -1,0 +1,15 @@
+version: "3"
+services:
+
+
+  postgres:
+    restart: always
+    image: sameersbn/postgresql:9.5-3
+    ports:
+      - "5432:5432"
+    environment:
+      - DEBUG=false
+
+      - DB_USER=codersrank
+      - DB_PASS=codersrank
+      - DB_NAME=codersrank
