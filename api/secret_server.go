@@ -5,16 +5,18 @@ import (
 	"os"
 
 	"github.com/cristianchaparroa/secret/initializer"
+	"github.com/cristianchaparroa/secret/metrics"
+	mw "github.com/cristianchaparroa/secret/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
-	ginprometheus "github.com/mcuadros/go-gin-prometheus"
 )
 
 // SecretServer is the server of secrets
 type SecretServer struct {
-	R  *gin.Engine
-	DB *gorm.DB
+	Engine  *gin.Engine
+	DB      *gorm.DB
+	Monitor *metrics.Monitor
 }
 
 // NewSecretServer returns a pointer to SecretServer
@@ -22,28 +24,34 @@ func NewSecretServer() *SecretServer {
 	gin.ForceConsoleColor()
 	r := gin.Default()
 	r.Use(gin.Recovery())
-	return &SecretServer{R: r}
+	return &SecretServer{Engine: r}
 }
 
 // Setup is in charge to up all the required configurations in the server
 func (ss *SecretServer) Setup() {
 	ss.setupDB()
-	ss.setupEndpoints()
 	ss.setupMetrics()
+	ss.setupEndpoints()
+
 }
 
 // setupEndpoints is in charge to confugure the API endpoints
 func (ss *SecretServer) setupEndpoints() {
 
 	sh := NewSecretHandler(ss.DB)
-
-	ss.R.GET("/v1/secret/:hash", sh.FindSecret)
-	ss.R.POST("/v1/secret", sh.CreateSecret)
+	ss.Engine.GET("/v1/secret/:hash", sh.FindSecret)
+	ss.Engine.POST("/v1/secret", sh.CreateSecret)
 }
 
 func (ss *SecretServer) setupMetrics() {
-	p := ginprometheus.NewPrometheus("gin")
-	p.Use(ss.R)
+
+	prefix := "codersrank"
+	ss.Monitor = metrics.NewMonitor(ss.Engine, prefix)
+
+	ss.Engine.Use(mw.ResponseTime(ss.Monitor.RespTime))
+	ss.Engine.Use(mw.CounterRequest(ss.Monitor.RequestTotal))
+	ss.Engine.Use(mw.PercentileResponseTime(ss.Monitor.PercentilRespTime))
+
 }
 
 // SetupDB is charge to initialize the database connection
@@ -71,7 +79,7 @@ func (ss *SecretServer) setupDB() {
 
 // Run start the server
 func (ss *SecretServer) Run() {
-	ss.R.Run()
+	ss.Engine.Run()
 }
 
 // Close all process in the server

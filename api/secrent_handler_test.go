@@ -46,6 +46,8 @@ func TestCreateSecret(t *testing.T) {
 		if tc.SecReq != nil {
 			bs, _ := json.Marshal(tc.SecReq)
 			c.Request, _ = http.NewRequest("POST", "", bytes.NewBuffer(bs))
+			c.Request.Header.Set("Accept", "json")
+
 		}
 
 		// Call the function to test

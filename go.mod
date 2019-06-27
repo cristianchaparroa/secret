@@ -7,6 +7,8 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.3.3
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.4.0
+	github.com/go-playground/locales v0.12.1 // indirect
+	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/golang/mock v1.3.1 // indirect
 	github.com/google/btree v1.0.0 // indirect
 	github.com/google/pprof v0.0.0-20190515194954-54271f7e092f // indirect
@@ -14,10 +16,11 @@ require (
 	github.com/jinzhu/gorm v1.9.9
 	github.com/joho/godotenv v1.3.0
 	github.com/kr/pty v1.1.5 // indirect
+	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/lib/pq v1.1.1
 	github.com/mattn/go-isatty v0.0.8 // indirect
 	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
-	github.com/prometheus/client_golang v1.0.0 // indirect
+	github.com/prometheus/client_golang v1.0.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/objx v0.2.0 // indirect
@@ -34,5 +37,6 @@ require (
 	google.golang.org/appengine v1.6.1 // indirect
 	google.golang.org/genproto v0.0.0-20190620144150-6af8c5fc6601 // indirect
 	google.golang.org/grpc v1.21.1 // indirect
+	gopkg.in/go-playground/validator.v9 v9.29.0 // indirect
 	honnef.co/go/tools v0.0.0-20190622161425-0d05180ad8c0 // indirect
 )

@@ -1,8 +1,8 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/cristianchaparroa/secret/core/response"
 	"github.com/cristianchaparroa/secret/services"
@@ -14,14 +14,14 @@ import (
 type SecretPostRequest struct {
 
 	// Secret is the plain text secret
-	Secret string
+	Secret string `binding:"required"`
 
 	// The secret won't be available after the given number of views.
 	// It must be greater than 0.
-	ExpireAfterViews int32
+	ExpireAfterViews int32 `binding:"required"`
 	// The secret won't be available after the given time.
 	// The value is provided in minutes. 0 means never expires
-	ExpireAfter int32
+	ExpireAfter int32 `binding:"required"`
 }
 
 // SecretHandler manges the request realted to secrets
@@ -40,14 +40,15 @@ func (h *SecretHandler) CreateSecret(c *gin.Context) {
 	var req SecretPostRequest
 
 	if err := c.BindJSON(&req); err != nil {
-		c.String(http.StatusMethodNotAllowed, "Invalid input")
+		c.String(http.StatusMethodNotAllowed, fmt.Sprintf("Invalid input:%v", err.Error()))
 		return
 	}
 
 	ss := services.NewSecretService(h.db)
-	now := time.Now()
-	m := ss.CreateSecret(req.Secret, req.ExpireAfterViews, now)
-	c.JSON(http.StatusOK, m)
+	m := ss.CreateSecret(req.Secret, req.ExpireAfterViews, req.ExpireAfter)
+
+	builder := response.NewBuilder(c, http.StatusOK, m)
+	builder.Render()
 }
 
 // FindSecret retrieve a secret according with a hash

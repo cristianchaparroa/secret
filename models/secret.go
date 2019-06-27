@@ -18,10 +18,10 @@ type Secret struct {
 	SecretText string `json:"secretText"`
 
 	// The date and time of the creation
-	CreatedAt time.Time `json:"createdAt"`
+	CreatedAt time.Time `json:"createdAt"  time_format:"2006-01-02 15:04:05"`
 
 	// The secret cannot be reached after this time
-	ExpiresAt time.Time `json:"expiresAt"`
+	ExpiresAt time.Time `json:"expiresAt"  time_format:"2006-01-02 15:04:05"`
 
 	// How many times the secret can be viewed
 	RemainingViews int32 `json:"remainingViews"`

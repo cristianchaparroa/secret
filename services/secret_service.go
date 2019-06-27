@@ -37,12 +37,16 @@ func NewSecretService(db *gorm.DB) *SecretService {
 }
 
 // CreateSecret add a new secret
-func (s *SecretService) CreateSecret(secret string, remainingViews int32, expiresAt time.Time) *models.Secret {
+func (s *SecretService) CreateSecret(secret string, remainingViews, expireAfter int32) *models.Secret {
 
 	logrus.Debug("--> SecretService:CreateSecret")
 
 	hash := util.CalculateSha512(secret)
 	now := time.Now()
+
+	expiresAt := time.Now()
+	expiresAt = expiresAt.Add(time.Duration(expireAfter) * time.Minute)
+
 	m := &models.Secret{Hash: hash, SecretText: secret,
 		CreatedAt: now, ExpiresAt: expiresAt, RemainingViews: remainingViews}
 
