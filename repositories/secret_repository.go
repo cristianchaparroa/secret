@@ -9,7 +9,7 @@ import (
 type ISecretRepository interface {
 	FindByHash(hash string) *models.Secret
 
-	Update(m *models.Secret)
+	Update(m *models.Secret) *models.Secret
 }
 
 // SecretRepository implements the methods to interact with secret model
