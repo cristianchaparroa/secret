@@ -31,7 +31,7 @@ func TestCreateSecret(t *testing.T) {
 		SecReq       *SecretPostRequest
 		ExpectedCode int
 	}{
-		{&SecretPostRequest{Secret: "my-secret", ExpireAfterViews: 3}, http.StatusOK},
+		{&SecretPostRequest{Secret: "my-secret", ExpireAfterViews: 3, ExpireAfter: 20}, http.StatusOK},
 		{nil, http.StatusBadRequest},
 	}
 
@@ -47,7 +47,6 @@ func TestCreateSecret(t *testing.T) {
 			bs, _ := json.Marshal(tc.SecReq)
 			c.Request, _ = http.NewRequest("POST", "", bytes.NewBuffer(bs))
 			c.Request.Header.Set("Accept", "json")
-
 		}
 
 		// Call the function to test
