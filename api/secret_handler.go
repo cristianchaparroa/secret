@@ -40,7 +40,7 @@ func (h *SecretHandler) CreateSecret(c *gin.Context) {
 	var req SecretPostRequest
 
 	if err := c.BindJSON(&req); err != nil {
-		c.String(http.StatusMethodNotAllowed, fmt.Sprintf("Invalid input:%v", err.Error()))
+		c.String(http.StatusMethodNotAllowed, fmt.Sprintf(InvalidInput, err.Error()))
 		return
 	}
 
@@ -58,7 +58,7 @@ func (h *SecretHandler) FindSecret(c *gin.Context) {
 	m := ss.GetSecret(hash)
 
 	if m == nil {
-		c.String(http.StatusNotFound, "Secret not found")
+		c.String(http.StatusNotFound, SecretNotFound)
 		return
 	}
 	builder := response.NewBuilder(c, http.StatusOK, m)

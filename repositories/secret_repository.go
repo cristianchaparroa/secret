@@ -1,4 +1,4 @@
-package respositories
+package repositories
 
 import (
 	"github.com/cristianchaparroa/secret/models"
@@ -34,6 +34,7 @@ func (r *SecretRepository) FindByHash(hash string) *models.Secret {
 }
 
 // Update makes an update of secret model
-func (r *SecretRepository) Update(m *models.Secret) {
+func (r *SecretRepository) Update(m *models.Secret) *models.Secret {
 	r.db.Table(SecretsTableName).Save(m)
+	return m
 }

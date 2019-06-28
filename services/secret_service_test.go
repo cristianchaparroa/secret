@@ -26,10 +26,10 @@ func TestSecretServiceCreateSecret(t *testing.T) {
 		secret         string
 		remainingViews int32
 		createdAt      time.Time
-		expiresAt      time.Time
+		expiresAt      int32
 	}{
-		{"test-secret", 1, now, now},
-		{"please save it as your life", 5, now, now},
+		{"test-secret", 1, now, 10},
+		{"please save it as your life", 5, now, 10},
 	}
 
 	s := NewSecretService(mockDB)

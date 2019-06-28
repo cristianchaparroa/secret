@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/cristianchaparroa/secret/models"
@@ -50,9 +49,7 @@ func (s *SecretService) CreateSecret(secret string, remainingViews, expireAfter 
 	m := &models.Secret{Hash: hash, SecretText: secret,
 		CreatedAt: now, ExpiresAt: expiresAt, RemainingViews: remainingViews}
 
-	err := s.db.Create(m)
-
-	fmt.Println(err)
+	s.db.Create(m)
 
 	logrus.Debug("<-- SecretService:CreateSecret")
 	return m
@@ -64,15 +61,12 @@ func (s *SecretService) GetSecret(hash string) *models.Secret {
 
 	m := s.SecretRep.FindByHash(hash)
 
-	fmt.Println(m)
-
 	if !s.IsSecretAvailble(m) {
 		logrus.Debug("<-- SecretService:GetSecret")
 		return nil
 	}
 
 	m.RemainingViews = m.RemainingViews - 1
-	fmt.Println(m)
 	s.SecretRep.Update(m)
 	logrus.Debug("<-- SecretService:GetSecret")
 	return m
