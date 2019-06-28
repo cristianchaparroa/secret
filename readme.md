@@ -37,4 +37,6 @@ go test ./...  -cover
 
 ### Project status
 
-[![Build Status](https://travis-ci.org/cristianchaparroa/secret.svg?branch=master)](https://travis-ci.org/cristianchaparroa/secret)
+The following is the current state in the different branches:
+
+Master: [![Build Status](https://travis-ci.org/cristianchaparroa/secret.svg?branch=master)](https://travis-ci.org/cristianchaparroa/secret)
