@@ -34,3 +34,7 @@ go run *.go
 ```
 go test ./...  -cover
 ```
+
+### Project status
+
+[![Build Status](https://travis-ci.org/cristianchaparroa/secret.svg?branch=master)](https://travis-ci.org/cristianchaparroa/secret)
