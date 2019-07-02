@@ -26,7 +26,6 @@ go build ...
 
 ```
 docker-compose up
-go run *.go
 ```
 
 ## Test

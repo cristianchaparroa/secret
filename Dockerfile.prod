@@ -1,0 +1,34 @@
+# Dockerfile References: https://docs.docker.com/engine/reference/builder/
+
+# Start from golang v1.12 base image
+FROM golang:1.12 AS builder
+
+# Force the go compiler to use modules
+ENV GO111MODULE=on
+
+# Add Maintainer Info
+LABEL maintainer="Cristian Chaparro <cristianchaparroa@gmail.com>"
+
+# Set the Current Working Directory inside the container
+WORKDIR $GOPATH/src/github.com/cristianchaparroa/secret
+
+# Copy everything from the current directory to the PWD(Present Working Directory) inside the container
+COPY . .
+
+# Download all the dependencies
+RUN go mod download
+RUN go mod tidy
+
+RUN go build -o  /go/bin/secret
+
+FROM scratch
+# Copy our static executable.
+COPY --from=builder /go/bin/secret /go/bin/secret
+
+# This container exposes port 8080 to the outside world
+EXPOSE 8080
+
+
+
+# run the binary
+ENTRYPOINT ["/go/bin/secret"]
